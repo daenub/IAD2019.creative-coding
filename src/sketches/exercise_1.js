@@ -15,23 +15,31 @@ const sketch = p => {
   }
 
   p.draw = () => {
-
-    const strokeWidth = (p.width / numOfStrokes) - gap
-    const strokeSpace = (p.width / numOfStrokes)
+    const strokeWidth = p.width / numOfStrokes - gap
+    const strokeSpace = p.width / numOfStrokes
     let h = Math.random() * 100
     let s = Math.random() * 100
     let b
 
     for (let i = numOfStrokes - 1; i >= 0; i--) {
-
       if (i < numOfStrokes / 2) {
         b = easeInQuad(p.map(i, numOfStrokes - 1, 0, 0, 1)) * 100
         p.fill(h, s, b)
-        p.rect(i * strokeSpace, 0, easeInQuad(p.map(i, numOfStrokes - 1, 0, 0, 1)) * strokeWidth, p.height)
+        p.rect(
+          i * strokeSpace,
+          0,
+          easeInQuad(p.map(i, numOfStrokes - 1, 0, 0, 1)) * strokeWidth,
+          p.height
+        )
       } else {
         b = easeInQuad(p.map(i, 0, numOfStrokes - 1, 0, 1)) * 100
         p.fill(h, s, b)
-        p.rect(i * strokeSpace, 0, easeInQuad(p.map(i, 0, numOfStrokes - 1, 0, 1)) * strokeWidth, p.height)
+        p.rect(
+          i * strokeSpace,
+          0,
+          easeInQuad(p.map(i, 0, numOfStrokes - 1, 0, 1)) * strokeWidth,
+          p.height
+        )
       }
     }
   }
@@ -46,7 +54,6 @@ const sketch = p => {
 
   // p.keyPressed = () => {
   // }
-
 }
 
 export default () => new p5(sketch)
