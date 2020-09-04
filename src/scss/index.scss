@@ -1,5 +1,10 @@
 @import 'variables';
+@import 'reset';
 
 html {
   font-size: $root-font-size;
+}
+
+.p5Canvas {
+  display: block;
 }

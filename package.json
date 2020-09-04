@@ -49,5 +49,8 @@
     "tabWidth": 2,
     "semi": false,
     "bracketSpacing": false
+  },
+  "dependencies": {
+    "p5": "^1.1.9"
   }
 }
