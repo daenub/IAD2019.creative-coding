@@ -114,9 +114,12 @@ body {
   color: inherit;
   appearance: none;
   background: transparent;
+
   padding: 1rem 2.5rem 1.125rem;
   border: 1px solid $white;
+
   line-height: 1;
+  letter-spacing: 0.025em;
 
   transition: .2s ease-in;
   transition-property: background-color, color;
