@@ -5,6 +5,125 @@ html {
   font-size: $root-font-size;
 }
 
+body {
+  min-height: 100vh;
+  background-color: $black;
+
+  font-family: 'Noto Sans JP', sans-serif;
+  color: $white;
+}
+
+.main {
+  max-width: 90%;
+  margin: 4rem auto 0;
+}
+
+.title {
+  display: inline-block;
+  margin-bottom: 4rem;
+  font-size: 8rem;
+  font-weight: $font-weight-bold;
+  line-height: $heading-line-height;
+
+  &::after {
+    content: '';
+    display: block;
+    background: $white;
+
+    width: 75%;
+    max-width: 50rem;
+    height: .5rem;
+    margin-top: 1.5rem;
+  }
+}
+
 .p5Canvas {
   display: block;
+}
+
+.sketch-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: $white;
+
+  transition: .3s ease-in-out transform;
+  transform: translateY(100%);
+
+  .active-sketch & {
+    transform: translateY(0);
+  }
+}
+
+.sketch-overlay__close {
+  display: block;
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+
+  width: 4rem;
+  height: 4rem;
+
+  border: 2px solid $black;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+
+  opacity: 0;
+  transition: .4s ease-out opacity;
+
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+
+    position: absolute;
+    top: 0;
+    left: 50%;
+
+    height: 100%;
+    width: .25rem;
+    background-color: $black;
+  }
+
+  &::before {
+    background-color: $black;
+    transform: translateX(-50%) rotate(-45deg);
+  }
+
+  &::after {
+    background-color: $black;
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  .active-sketch & {
+    opacity: 1;
+    transition-delay: .5s;
+  }
+}
+
+.sketch-list__item {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+.sketch-list__button {
+  color: inherit;
+  appearance: none;
+  background: transparent;
+  padding: 1rem 2.5rem 1.125rem;
+  border: 1px solid $white;
+  line-height: 1;
+
+  transition: .2s ease-in;
+  transition-property: background-color, color;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $white;
+    color: $black;
+  }
 }

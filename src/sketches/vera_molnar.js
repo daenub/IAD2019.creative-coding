@@ -102,4 +102,4 @@ const sketch = p => {
   }
 }
 
-export default () => new p5(sketch)
+export default (wrapper) => new p5(sketch, wrapper)
