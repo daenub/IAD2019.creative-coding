@@ -9,7 +9,7 @@ body {
   min-height: 100vh;
   background-color: $black;
 
-  font-family: 'Noto Sans JP', sans-serif;
+  font-family: "Noto Sans JP", sans-serif;
   color: $white;
 }
 
@@ -26,13 +26,13 @@ body {
   line-height: $heading-line-height;
 
   &::after {
-    content: '';
+    content: "";
     display: block;
     background: $white;
 
     width: 75%;
     max-width: 50rem;
-    height: .5rem;
+    height: 0.5rem;
     margin-top: 1.5rem;
   }
 }
@@ -49,7 +49,7 @@ body {
   height: 100vh;
   background-color: $white;
 
-  transition: .3s ease-in-out transform;
+  transition: 0.3s ease-in-out transform;
   transform: translateY(100%);
 
   .active-sketch & {
@@ -72,11 +72,11 @@ body {
   cursor: pointer;
 
   opacity: 0;
-  transition: .4s ease-out opacity;
+  transition: 0.4s ease-out opacity;
 
   &::before,
   &::after {
-    content: '';
+    content: "";
     display: block;
 
     position: absolute;
@@ -84,7 +84,7 @@ body {
     left: 50%;
 
     height: 100%;
-    width: .25rem;
+    width: 0.25rem;
     background-color: $black;
   }
 
@@ -100,7 +100,7 @@ body {
 
   .active-sketch & {
     opacity: 1;
-    transition-delay: .5s;
+    transition-delay: 0.5s;
   }
 }
 
@@ -121,7 +121,7 @@ body {
   line-height: 1;
   letter-spacing: 0.025em;
 
-  transition: .2s ease-in;
+  transition: 0.2s ease-in;
   transition-property: background-color, color;
   cursor: pointer;
 

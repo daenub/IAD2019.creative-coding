@@ -3,7 +3,7 @@ import exercise_1 from "./sketches/exercise_1"
 import vera_molnar from "./sketches/vera_molnar"
 import nadaSurf from "./sketches/nada_surf"
 
-const $ = (s) => document.querySelector(s)
+const $ = s => document.querySelector(s)
 
 const sketches = [
   ["Übung 1", exercise_1],
@@ -23,7 +23,7 @@ sketchClose.addEventListener("click", e => {
   activeSketch = null
 })
 
-const openExercise = (sketch) => {
+const openExercise = sketch => {
   document.body.classList.add("active-sketch")
   activeSketch = sketch(sketchWrapper)
 }
@@ -38,7 +38,7 @@ sketches.forEach(([label, sketch]) => {
   button.classList.add("sketch-list__button")
 
   button.textContent = label
-  button.addEventListener("click", (e) => {
+  button.addEventListener("click", e => {
     e.preventDefault()
     openExercise(sketch)
   })
@@ -48,3 +48,6 @@ sketches.forEach(([label, sketch]) => {
 })
 
 sketchList.appendChild(sketchListFrag)
+
+/* Dev Mode */
+// openExercise(nadaSurf)
