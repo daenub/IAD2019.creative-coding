@@ -1,7 +1,6 @@
 import "./scss/index.scss"
 import exercise_1 from "./sketches/exercise_1"
-import vera_molnar_1 from "./sketches/vera_molnar_1"
-import vera_molnar_2 from "./sketches/vera_molnar_2"
+import vera_molnar from "./sketches/vera_molnar"
 import nadaSurf from "./sketches/nada_surf"
 import linePattern from "./sketches/linePattern"
 
@@ -9,8 +8,7 @@ const $ = s => document.querySelector(s)
 
 const sketches = [
   ["Übung 1", exercise_1],
-  ["Vera Molnar • 1", vera_molnar_1],
-  ["Vera Molnar • 2", vera_molnar_2],
+  ["Vera Molnar", vera_molnar],
   ["Nada Surf", nadaSurf],
   ["Line pattern", linePattern],
 ]
