@@ -8,8 +8,6 @@ let yoff = 0
 let ca, cb
 let ox, oy
 
-let MAX
-
 const sketch = p => {
   let canvas
 
@@ -36,6 +34,7 @@ const sketch = p => {
     for (let i = 0; i < 90; i++) {
       p.stroke(p.lerpColor(ca, cb, p.noise((i + 1) / 100, yoff)))
       p.strokeWeight(p.noise((i + 1) / 100) * 5, yoff)
+
       p.beginShape()
 
       for (let j = 0; j < 360; j++) {
