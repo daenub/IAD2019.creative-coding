@@ -1,14 +1,18 @@
 import "./scss/index.scss"
 import exercise_1 from "./sketches/exercise_1"
-import vera_molnar from "./sketches/vera_molnar"
+import vera_molnar_1 from "./sketches/vera_molnar_1"
+import vera_molnar_2 from "./sketches/vera_molnar_2"
 import nadaSurf from "./sketches/nada_surf"
+import linePattern from "./sketches/linePattern"
 
 const $ = s => document.querySelector(s)
 
 const sketches = [
   ["Übung 1", exercise_1],
-  ["Vera Molnar", vera_molnar],
+  ["Vera Molnar • 1", vera_molnar_1],
+  ["Vera Molnar • 2", vera_molnar_2],
   ["Nada Surf", nadaSurf],
+  ["Line pattern", linePattern],
 ]
 
 const sketchClose = $("[data-sketch-close]")
@@ -50,4 +54,4 @@ sketches.forEach(([label, sketch]) => {
 sketchList.appendChild(sketchListFrag)
 
 /* Dev Mode */
-// openExercise(nadaSurf)
+// openExercise(linePattern)
