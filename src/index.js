@@ -6,6 +6,7 @@ import linePattern from "./sketches/linePattern"
 import waves from "./sketches/waves"
 import stripedCircle from "./sketches/stripedCircle"
 import trigo from "./sketches/trigo"
+import perlinLoop from "./sketches/perlinLoop"
 
 const $ = s => document.querySelector(s)
 
@@ -16,7 +17,8 @@ const sketches = [
   ["Line pattern", linePattern],
   ["Waves", waves],
   ["Striped circle", stripedCircle],
-  ["Trigo", trigo]
+  ["Trigo", trigo],
+  ["Perlin loop", perlinLoop]
 ]
 
 const sketchClose = $("[data-sketch-close]")
@@ -58,4 +60,4 @@ sketches.forEach(([label, sketch]) => {
 sketchList.appendChild(sketchListFrag)
 
 /* Dev Mode */
-// openExercise(stripedCircle)
+// openExercise(perlinLoop)
