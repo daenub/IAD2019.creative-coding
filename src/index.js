@@ -4,6 +4,8 @@ import vera_molnar from "./sketches/vera_molnar"
 import nadaSurf from "./sketches/nada_surf"
 import linePattern from "./sketches/linePattern"
 import waves from "./sketches/waves"
+import stripedCircle from "./sketches/stripedCircle"
+import trigo from "./sketches/trigo"
 
 const $ = s => document.querySelector(s)
 
@@ -13,6 +15,8 @@ const sketches = [
   ["Nada Surf", nadaSurf],
   ["Line pattern", linePattern],
   ["Waves", waves],
+  ["Striped circle", stripedCircle],
+  ["Trigo", trigo]
 ]
 
 const sketchClose = $("[data-sketch-close]")
@@ -54,4 +58,4 @@ sketches.forEach(([label, sketch]) => {
 sketchList.appendChild(sketchListFrag)
 
 /* Dev Mode */
-// openExercise(waves)
+// openExercise(trigo)
