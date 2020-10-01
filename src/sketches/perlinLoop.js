@@ -1,4 +1,5 @@
 import p5 from "p5"
+import "../lib/p5.gui.js"
 
 export const easeInQuad = pos => Math.pow(pos, 2)
 export const easeOutQuad = pos => -(Math.pow(pos - 1, 2) - 1)
@@ -6,14 +7,14 @@ export const easeOutQuad = pos => -(Math.pow(pos - 1, 2) - 1)
 // let yoff = 0
 
 const minRadius = 100
-let numOfCircles = 25
+let numOfCircles = 10
 let radiusSpaceDuration = 0
 let maxRadiusSpace = 0
 
 const backgroundColor = "#232323"
 const lineColor = "#fae3a2aa"
 
-let noiseMax = 4
+let noiseMax = 10
 let zOff = 0
 
 let ox, oy
@@ -21,8 +22,17 @@ let ox, oy
 const sketch = p => {
   let canvas
 
-  p.setup = () => {
+  let params = {
+    maxRadiusSpace: 300,
+    maxRadiusSpaceMax: 400,
+    maxRadiusSpaceMin: 40,
+    maxRadiusSpaceStep: 5,
+  }
+
+  p.setup = function() {
     canvas = p.createCanvas(p.windowWidth, p.windowHeight)
+    let gui = p.createGui(this)
+    gui.addObject(params)
 
     ox = p.width / 2
     oy = p.height / 2
@@ -32,10 +42,11 @@ const sketch = p => {
   }
 
   p.draw = () => {
-    p.background(backgroundColor)
+    p.background("#23232311")
     p.translate(ox, oy)
 
-    maxRadiusSpace = p.map(p.mouseX, 0, p.width, 40, 100)
+    const {maxRadiusSpace} = params
+    // maxRadiusSpace = p.map(p.mouseX, 0, p.width, 40, 400)
     // noiseMax = p.map(p.mouseX, 0, p.width, 50, 1)
     // maxRadiusSpace = p.abs(90 * p.sin(radiusSpaceDuration))
 
@@ -47,6 +58,7 @@ const sketch = p => {
       let c = p.color(lineColor)
       c.setAlpha(p.map(i, 0, numOfCircles, 255, 50))
       p.stroke(c)
+      p.strokeWeight(p.noise(i, zOff) * 5)
 
       p.beginShape()
       for (let angle = 0; angle < p.TWO_PI; angle += 0.02) {

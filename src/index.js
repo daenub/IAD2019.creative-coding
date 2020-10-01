@@ -60,4 +60,4 @@ sketches.forEach(([label, sketch]) => {
 sketchList.appendChild(sketchListFrag)
 
 /* Dev Mode */
-// openExercise(perlinLoop)
+openExercise(perlinLoop)
