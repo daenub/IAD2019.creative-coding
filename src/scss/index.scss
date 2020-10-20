@@ -130,3 +130,28 @@ body {
     color: $black;
   }
 }
+
+
+.text-input {
+  position: fixed;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  font-size: 2rem;
+  padding: .25em 1em .5em;
+  border: none;
+
+  &.hide {
+    display: none;
+  }
+
+  &.loading {
+    opacity: 0.5;
+  }
+
+  &.error {
+    border-top: 5px solid #fd3c4e;
+  }
+}

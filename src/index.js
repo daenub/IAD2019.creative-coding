@@ -7,6 +7,7 @@ import waves from "./sketches/waves"
 import stripedCircle from "./sketches/stripedCircle"
 import trigo from "./sketches/trigo"
 import perlinLoop from "./sketches/perlinLoop"
+import endlessTunnel from "./sketches/endlessTunnel"
 
 const $ = s => document.querySelector(s)
 
@@ -18,7 +19,8 @@ const sketches = [
   ["Waves", waves],
   ["Striped circle", stripedCircle],
   ["Trigo", trigo],
-  ["Perlin loop", perlinLoop]
+  ["Perlin loop", perlinLoop],
+  ["Endless tunnel", endlessTunnel]
 ]
 
 const sketchClose = $("[data-sketch-close]")
@@ -60,4 +62,4 @@ sketches.forEach(([label, sketch]) => {
 sketchList.appendChild(sketchListFrag)
 
 /* Dev Mode */
-openExercise(perlinLoop)
+openExercise(endlessTunnel)
