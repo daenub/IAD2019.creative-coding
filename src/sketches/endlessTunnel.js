@@ -13,19 +13,21 @@ let noiseMax = 1000
 
 const backgroundColor = "#232323"
 const backgroundColorAlpha = "#23232333"
+const inputModeOverlayColor = "#23232399"
 const lineColor = "#fae3a2aa"
 
 let ox, oy
 let zOff = 0
 
-let inputMode = false
+let inputMode = true
 let inputElement = null
 
 let cityName = null
+// not in use at the moment
 let windDir = null
 
 const params = {
-  windSpeed: 20,
+  windSpeed: 0,
   windSpeedMax: 100,
   windSpeedMin: 0,
 }
@@ -67,14 +69,14 @@ const sketch = p => {
 
     noiseMax = p.map(windSpeed, 0, 100, 10, 1000)
 
-    p.strokeWeight(0)
-    p.fill(lineColor)
-    p.textFont(fontBold)
-    p.textSize(40)
-    p.textAlign(p.CENTER)
-    p.text(cityName || "Click to search for a city", 0, 0)
-
     if (cityName !== null) {
+      p.strokeWeight(0)
+      p.fill(lineColor)
+      p.textFont(fontBold)
+      p.textSize(40)
+      p.textAlign(p.CENTER)
+      p.text(cityName, 0, 0)
+
       p.textFont(fontThin)
       p.textSize(40)
       p.text(`${windSpeed} km/h`, 0, 40)
@@ -112,12 +114,15 @@ const sketch = p => {
     })
 
     zOff += p.map(windSpeed, 0, 100, 0.001, 0.03)
+
+    if (inputMode) {
+      p.background(inputModeOverlayColor)
+    }
   }
 
   p.mouseClicked = (e) => {
     if (e.target.closest(".qs_main") === null) {
-      inputMode = !inputMode
-      updateInputFieldVisibility()
+      toggleInputFieldVisibility()
     }
   }
 
@@ -135,9 +140,14 @@ function createInputElement() {
   inputElement = document.createElement("input")
   inputElement.type = "text"
   inputElement.className = "text-input"
-  updateInputFieldVisibility()
+  inputElement.classList.toggle("hide", !inputMode)
+  inputElement.placeholder = "City"
 
   document.body.appendChild(inputElement)
+
+  if (inputMode) {
+    inputElement.focus()
+  }
 
   inputElement.addEventListener("click", e => {
     e.stopPropagation()
@@ -147,14 +157,19 @@ function createInputElement() {
     if (e.keyCode === 13 && inputElement.value !== "") {
       fetchWeatherData(inputElement.value)
     } else if (e.keyCode === 27) {
-      inputMode = !inputMode
-      updateInputFieldVisibility()
+      toggleInputFieldVisibility()
     }
   })
 }
 
-function updateInputFieldVisibility() {
+function toggleInputFieldVisibility() {
+  inputMode = !inputMode
   inputElement.classList.toggle("hide", !inputMode)
+
+  if (inputMode) {
+    console.log("set focus")
+    inputElement.focus()
+  }
 }
 
 function fetchWeatherData(q) {
@@ -174,8 +189,7 @@ function fetchWeatherData(q) {
         params.windSpeed = data.current.wind_speed
         windDir = data.current.wind_degree
 
-        inputMode = !inputMode
-        updateInputFieldVisibility()
+        toggleInputFieldVisibility()
       } else {
         throw new Error(`${data.error.code} – ${data.error.info} – ${data.error.type}`)
       }
