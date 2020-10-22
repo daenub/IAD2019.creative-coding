@@ -1,4 +1,5 @@
 import p5 from "p5"
+import "../lib/p5.gui.js"
 
 const easeInQuad = pos => Math.pow(pos, 2)
 
@@ -21,8 +22,13 @@ let inputMode = false
 let inputElement = null
 
 let cityName = null
-let windSpeed = 20
 let windDir = null
+
+const params = {
+  windSpeed: 20,
+  windSpeedMax: 100,
+  windSpeedMin: 0,
+}
 
 /* Fonts */
 let fontThin,
@@ -34,6 +40,8 @@ const sketch = p => {
 
   p.setup = function() {
     canvas = p.createCanvas(p.windowWidth, p.windowHeight)
+    let gui = p.createGui(this)
+    gui.addObject(params)
 
     fontThin = p.loadFont(require("../fonts/Raleway-Thin.ttf"))
     fontBold = p.loadFont(require("../fonts/Raleway-Bold.ttf"))
@@ -53,18 +61,19 @@ const sketch = p => {
   }
 
   p.draw = () => {
+    const {windSpeed} = params
     p.background(backgroundColor)
     p.translate(ox, oy)
 
     noiseMax = p.map(windSpeed, 0, 100, 10, 1000)
 
-    if (cityName !== null) {
-      p.strokeWeight(0)
-      p.fill(lineColor)
-      p.textFont(fontBold)
-      p.textSize(40)
-      p.text(cityName, 0, 0)
+    p.strokeWeight(0)
+    p.fill(lineColor)
+    p.textFont(fontBold)
+    p.textSize(40)
+    p.text(cityName || "Click", 0, 0)
 
+    if (cityName !== null) {
       p.textFont(fontThin)
       p.textSize(40)
       p.text(`${windSpeed} km/h`, 0, 40)
@@ -97,16 +106,18 @@ const sketch = p => {
     })
 
     circles = circles.map(([radius, ...circle], i) => {
-      const nextRadius = radius >= 1 ? 0 : radius + p.map(windSpeed, 0, 100, 0.0003, 0.004)
+      const nextRadius = radius >= 1 ? 0 : radius + p.map(windSpeed, 0, 100, 0.0003, 0.007)
       return [nextRadius, ...circle]
     })
 
-    zOff += p.map(windSpeed, 0, 100, 0.001, 0.05)
+    zOff += p.map(windSpeed, 0, 100, 0.001, 0.03)
   }
 
   p.mouseClicked = (e) => {
-    inputMode = !inputMode
-    updateInputFieldVisibility()
+    if (e.target.closest(".qs_main") === null) {
+      inputMode = !inputMode
+      updateInputFieldVisibility()
+    }
   }
 
   p.windowResized = () => {
@@ -159,7 +170,7 @@ function fetchWeatherData(q) {
       // API response only contains success property if an error has occured
       if (data.success !== false) {
         cityName = data.location.name
-        windSpeed = data.current.wind_speed
+        params.windSpeed = data.current.wind_speed
         windDir = data.current.wind_degree
 
         inputMode = !inputMode
