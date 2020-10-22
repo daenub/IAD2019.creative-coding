@@ -38,12 +38,13 @@ let fontThin,
 
 const sketch = p => {
   let canvas
-  createInputElement()
 
   p.setup = function() {
     canvas = p.createCanvas(p.windowWidth, p.windowHeight)
     let gui = p.createGui(this)
     gui.addObject(params)
+
+    createInputElement()
 
     fontThin = p.loadFont(require("../fonts/Raleway-Thin.ttf"))
     fontBold = p.loadFont(require("../fonts/Raleway-Bold.ttf"))
@@ -67,7 +68,7 @@ const sketch = p => {
     p.background(backgroundColor)
     p.translate(ox, oy)
 
-    noiseMax = p.map(windSpeed, 0, 100, 10, 1000)
+    noiseMax = p.map(windSpeed, 0, 100, 5, 50)
 
     if (cityName !== null) {
       p.strokeWeight(0)
@@ -94,7 +95,7 @@ const sketch = p => {
       p.stroke(c)
 
       p.beginShape()
-      for (let angle = 0; angle < p.TWO_PI; angle += 0.08) {
+      for (let angle = 0; angle < p.TWO_PI; angle += 0.02) {
         let xOff = p.map(p.cos(angle), -1, 1, 0, noiseMax)
         let yOff = p.map(p.sin(angle), -1, 1, 0, noiseMax)
 
