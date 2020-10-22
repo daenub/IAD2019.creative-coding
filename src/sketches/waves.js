@@ -38,8 +38,8 @@ const sketch = p => {
       p.beginShape()
 
       for (let j = 0; j < 360; j++) {
-        const x = p.sin(j) * max
-        const y = p.cos(j) * max
+        const x = p.cos(j) * max
+        const y = p.sin(j) * max
 
         p.vertex(x, y + (p.noise((j + 1) / 75, yoff) * 500))
       }
