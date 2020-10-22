@@ -71,7 +71,8 @@ const sketch = p => {
     p.fill(lineColor)
     p.textFont(fontBold)
     p.textSize(40)
-    p.text(cityName || "Click", 0, 0)
+    p.textAlign(p.CENTER)
+    p.text(cityName || "Click to search for a city", 0, 0)
 
     if (cityName !== null) {
       p.textFont(fontThin)
