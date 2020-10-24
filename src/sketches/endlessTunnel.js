@@ -1,4 +1,6 @@
 import p5 from "p5"
+import "p5/lib/addons/p5.sound"
+
 import "../lib/p5.gui.js"
 
 const easeInQuad = pos => Math.pow(pos, 2)
@@ -37,7 +39,15 @@ let fontThin,
   fontBold
 
 const sketch = p => {
+  window.p5 = p
+
   let canvas
+  let sound
+
+  p.preload = function() {
+    p.soundFormats("mp3")
+    sound = p.loadSound(require("../sound/Sanctuary.mp3"), soundLoaded)
+  }
 
   p.setup = function() {
     canvas = p.createCanvas(p.windowWidth, p.windowHeight)
@@ -119,6 +129,10 @@ const sketch = p => {
     if (inputMode) {
       p.background(inputModeOverlayColor)
     }
+
+    if (sound) {
+      sound.rate(p.map(windSpeed, 0, 100, 0.8, 1.8))
+    }
   }
 
   p.mouseClicked = (e) => {
@@ -131,6 +145,10 @@ const sketch = p => {
     p.resizeCanvas(p.windowWidth, p.windowHeight)
     ox = p.width / 2
     oy = p.height / 2
+  }
+
+  function soundLoaded(sound) {
+    createAudioToggle(sound)
   }
 }
 
@@ -168,7 +186,6 @@ function toggleInputFieldVisibility() {
   inputElement.classList.toggle("hide", !inputMode)
 
   if (inputMode) {
-    console.log("set focus")
     inputElement.focus()
   }
 }
@@ -196,7 +213,6 @@ function fetchWeatherData(q) {
       }
     })
     .catch(err => {
-      console.log("Error", err)
       loadingEnd()
       inputError()
     })
@@ -207,3 +223,23 @@ const loadingEnd = () => {inputElement.classList.remove("loading"); inputElement
 const inputError = () => inputElement.classList.add("error")
 const inputErrorReset = () => inputElement.classList.remove("error")
 
+
+function createAudioToggle(sound) {
+  const button = document.createElement("button")
+  button.classList.add("audio-toggle")
+
+  button.textContent = "⏯"
+  document.body.appendChild(button)
+
+  button.addEventListener("click", e => {
+    e.stopPropagation()
+    if (sound.isLooping()) {
+      sound.pause()
+    } else {
+      sound.loop()
+    }
+  })
+
+  sound.loop()
+  sound.setVolume(0.7)
+}

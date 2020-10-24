@@ -52,7 +52,7 @@
     "bracketSpacing": false
   },
   "dependencies": {
-    "p5": "^1.1.9",
+    "p5": "0.9.0",
     "quicksettings": "^3.0.1"
   }
 }
