@@ -62,4 +62,4 @@ sketches.forEach(([label, sketch]) => {
 sketchList.appendChild(sketchListFrag)
 
 /* Dev Mode */
-// openExercise(endlessTunnel)
+openExercise(endlessTunnel)

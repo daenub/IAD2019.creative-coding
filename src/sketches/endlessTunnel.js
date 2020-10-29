@@ -1,9 +1,10 @@
 import p5 from "p5"
-import "p5/lib/addons/p5.sound"
 
-import "../lib/p5.gui.js"
+// import "../lib/p5.sound"
+import "../lib/p5.gui"
 
 const easeInQuad = pos => Math.pow(pos, 2)
+const easeOutQuad = pos => -(Math.pow(pos - 1, 2) - 1)
 
 const radiusBase = 50
 
@@ -13,15 +14,27 @@ let circles = []
 
 let noiseMax = 1000
 
-const backgroundColor = "#232323"
-const backgroundColorAlpha = "#23232333"
+const backgroundColorWarm = "#232323"
+const backgroundColorCold = "#1D14A3" // "#291FB2"
 const inputModeOverlayColor = "#23232399"
-const lineColor = "#fae3a2aa"
+
+const lineColorWarm = "#fae3a2aa"
+const lineColorCold = "#ffffff"
+
+
+const color1 = "#75D5FD"
+const color2 = "#B76CFD"
+const color3 = "#FF2281"
+const color4 = "#011FFD"
+
+const color31 = "#FFAF22"
+const color41 = "#01DFFD"
 
 let ox, oy
 let zOff = 0
+let strokeXOff = 0
 
-let inputMode = true
+let inputMode = false
 let inputElement = null
 
 let cityName = null
@@ -30,8 +43,11 @@ let windDir = null
 
 const params = {
   windSpeed: 0,
-  windSpeedMax: 100,
   windSpeedMin: 0,
+  windSpeedMax: 100,
+  temperature: 20,
+  temperatureMin: 0,
+  temperatureMax: 40,
 }
 
 /* Fonts */
@@ -45,8 +61,8 @@ const sketch = p => {
   let sound
 
   p.preload = function() {
-    p.soundFormats("mp3")
-    sound = p.loadSound(require("../sound/Sanctuary.mp3"), soundLoaded)
+    // p.soundFormats("mp3")
+    // sound = p.loadSound(require("../sound/Sanctuary.mp3"), soundLoaded)
   }
 
   p.setup = function() {
@@ -70,68 +86,79 @@ const sketch = p => {
       const alpha = p.map(i, 0, numOfCircles - 1, 0, 255)
       circles[i] = [radius, alpha]
     }
-    p.background(backgroundColor)
   }
 
   p.draw = () => {
-    const {windSpeed} = params
-    p.background(backgroundColor)
-    p.translate(ox, oy)
+    const {windSpeed, windSpeedMin, windSpeedMax, temperature, temperatureMin, temperatureMax} = params
+    // const lineColor = p.lerpColor(p.color(lineColorCold), p.color(lineColorWarm), p.map(temperature, temperatureMin, temperatureMax, 0, 1))
+    // const backgroundColor = p.lerpColor(p.color(backgroundColorCold), p.color(backgroundColorWarm), p.map(temperature, temperatureMin, temperatureMax, 0, 1))
+    const lineColorFrom = p.lerpColor(p.color(color3), p.color(color4), p.map(temperature, temperatureMin, temperatureMax, 0, 1))
+    const lineColorTo = p.lerpColor(p.color(color31), p.color(color41), p.map(temperature, temperatureMin, temperatureMax, 0, 1))
+    const backgroundColor = p.lerpColor(p.color(color1), p.color(color2), p.map(temperature, temperatureMin, temperatureMax, 0, 1))
 
-    noiseMax = p.map(windSpeed, 0, 100, 5, 50)
+
+    p.background(backgroundColor)
+
+    noiseMax = p.map(windSpeed, windSpeedMin, windSpeedMax, 5, 50)
+
+    p.strokeWeight(0)
+    p.fill(lineColorFrom)
+    p.textFont(fontBold)
+    p.textSize(40)
+    p.text(cityName || "Click to search for a city", 20, p.height - 20)
 
     if (cityName !== null) {
-      p.strokeWeight(0)
-      p.fill(lineColor)
-      p.textFont(fontBold)
-      p.textSize(40)
-      p.textAlign(p.CENTER)
-      p.text(cityName, 0, 0)
-
       p.textFont(fontThin)
       p.textSize(40)
-      p.text(`${windSpeed} km/h`, 0, 40)
+      p.text(`${windSpeed} km/h`, 20, p.height - 20 - 50)
+      p.text(`${temperature}°C`, 20, p.height - 20 - 50 - 50)
     }
+
+    p.translate(ox, oy)
 
     p.noFill()
     circles.forEach(([normalizedRadius, alpha], i) => {
-      p.strokeWeight(p.map(easeInQuad(normalizedRadius), 0, 1, 2, 10))
+      const strokeMax = p.map(temperature, temperatureMin, temperatureMax, 2, 12)
+      p.strokeWeight(p.map(p.noise(strokeXOff), 0, 1, 2, strokeMax))
 
       const cirlceRadiusBase = p.map(easeInQuad(normalizedRadius), 0, 1, radiusBase, maxRadius)
       const nextCircleRadiusBase = p.map(easeInQuad(normalizedRadius + 1 / numOfCircles), 0, 1, radiusBase, maxRadius)
 
-      let c = p.color(lineColor)
-      c.setAlpha(p.map(easeInQuad(normalizedRadius), 0, 1, 0, 255))
+      let c = p.color(p.lerpColor(lineColorFrom, lineColorTo, p.noise(strokeXOff + i / 20)))
+      // c.setAlpha(p.map(easeInQuad(normalizedRadius), 0, 1, 0, 255))
+      c.setAlpha(p.map(p.noise(strokeXOff), 0, 1, 127, 255))
       p.stroke(c)
 
       p.beginShape()
-      for (let angle = 0; angle < p.TWO_PI; angle += 0.02) {
+      for (let angle = 0; angle < p.TWO_PI; angle += 0.10) {
         let xOff = p.map(p.cos(angle), -1, 1, 0, noiseMax)
         let yOff = p.map(p.sin(angle), -1, 1, 0, noiseMax)
 
-        let radius = p.map(p.noise(xOff, yOff, zOff), 0, 1, cirlceRadiusBase, nextCircleRadiusBase * p.map(windSpeed, 0, 100, 1.125, 1.5))
+        let radius = p.map(p.noise(xOff, yOff, zOff + i / 10), 0, 1, cirlceRadiusBase, nextCircleRadiusBase * p.map(windSpeed, windSpeedMin, windSpeedMax, 1.125, 1.5))
 
         let x = radius * p.cos(angle)
         let y = radius * p.sin(angle)
 
-        p.vertex(x, y)
+        p.curveVertex(x, y)
       }
       p.endShape(p.CLOSE)
     })
 
     circles = circles.map(([radius, ...circle], i) => {
-      const nextRadius = radius >= 1 ? 0 : radius + p.map(windSpeed, 0, 100, 0.0003, 0.007)
+      const easeWindSpeed = easeOutQuad(p.map(windSpeed, windSpeedMin, windSpeedMax, 0, 1))
+      const nextRadius = radius >= 1 ? 0 : radius + p.map(easeWindSpeed, 0, 1, 0.0003, 0.01)
       return [nextRadius, ...circle]
     })
 
-    zOff += p.map(windSpeed, 0, 100, 0.001, 0.03)
+    zOff += p.map(windSpeed, windSpeedMin, windSpeedMax, 0.001, 0.03)
+    strokeXOff += p.map(windSpeed, windSpeedMin, windSpeedMax, 0.001, 0.01)
 
     if (inputMode) {
       p.background(inputModeOverlayColor)
     }
 
     if (sound) {
-      sound.rate(p.map(windSpeed, 0, 100, 0.8, 1.8))
+      sound.rate(p.map(windSpeed, windSpeedMin, windSpeedMax, 0.8, 1.8))
     }
   }
 
@@ -206,6 +233,7 @@ function fetchWeatherData(q) {
         cityName = data.location.name
         params.windSpeed = data.current.wind_speed
         windDir = data.current.wind_degree
+        params.temperature = data.current.temperature
 
         toggleInputFieldVisibility()
       } else {
