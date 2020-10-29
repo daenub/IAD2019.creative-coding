@@ -21,7 +21,7 @@ const inputModeOverlayColor = "#23232399"
 const lineColorWarm = "#fae3a2aa"
 const lineColorCold = "#ffffff"
 
-
+// TODO: name these color variables properly
 const color1 = "#75D5FD"
 const color2 = "#B76CFD"
 const color3 = "#FF2281"
