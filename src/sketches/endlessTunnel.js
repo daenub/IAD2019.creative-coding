@@ -13,21 +13,18 @@ let circles = []
 
 let noiseMax = 1000
 
-const backgroundColorWarm = "#232323"
-const backgroundColorCold = "#1D14A3" // "#291FB2"
 const inputModeOverlayColor = "#23232399"
 
 const lineColorWarm = "#fae3a2aa"
 const lineColorCold = "#ffffff"
 
-// TODO: name these color variables properly
-const color1 = "#75D5FD"
-const color2 = "#B76CFD"
-const color3 = "#FF2281"
-const color4 = "#011FFD"
+const backgroundColorCold = "#75D5FD"
+const backgroundColorWarm = "#B76CFD"
+const lineColorFromCold = "#FF2281"
+const lineColorFromWarm = "#011FFD"
 
-const color31 = "#FFAF22"
-const color41 = "#01DFFD"
+const lineColorToCold = "#FFAF22"
+const lineColorToWarm = "#01DFFD"
 
 let ox, oy
 let zOff = 0
@@ -83,11 +80,9 @@ const sketch = p => {
 
   p.draw = () => {
     const {windSpeed, windSpeedMin, windSpeedMax, temperature, temperatureMin, temperatureMax} = params
-    // const lineColor = p.lerpColor(p.color(lineColorCold), p.color(lineColorWarm), p.map(temperature, temperatureMin, temperatureMax, 0, 1))
-    // const backgroundColor = p.lerpColor(p.color(backgroundColorCold), p.color(backgroundColorWarm), p.map(temperature, temperatureMin, temperatureMax, 0, 1))
-    const lineColorFrom = p.lerpColor(p.color(color3), p.color(color4), p.map(temperature, temperatureMin, temperatureMax, 0, 1))
-    const lineColorTo = p.lerpColor(p.color(color31), p.color(color41), p.map(temperature, temperatureMin, temperatureMax, 0, 1))
-    const backgroundColor = p.lerpColor(p.color(color1), p.color(color2), p.map(temperature, temperatureMin, temperatureMax, 0, 1))
+    const lineColorFrom = p.lerpColor(p.color(lineColorFromCold), p.color(lineColorFromWarm), p.map(temperature, temperatureMin, temperatureMax, 0, 1))
+    const lineColorTo = p.lerpColor(p.color(lineColorToCold), p.color(lineColorToWarm), p.map(temperature, temperatureMin, temperatureMax, 0, 1))
+    const backgroundColor = p.lerpColor(p.color(backgroundColorCold), p.color(backgroundColorWarm), p.map(temperature, temperatureMin, temperatureMax, 0, 1))
 
 
     p.background(backgroundColor)
