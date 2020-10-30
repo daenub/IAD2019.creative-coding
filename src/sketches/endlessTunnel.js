@@ -113,8 +113,13 @@ const sketch = p => {
       const nextCircleRadiusBase = p.map(easeInQuad(normalizedRadius + 1 / numOfCircles), 0, 1, radiusBase, maxRadius)
 
       let c = p.color(p.lerpColor(lineColorFrom, lineColorTo, p.noise(strokeXOff + i / 20)))
+
+      // Opacity as a depth effect:
       // c.setAlpha(p.map(easeInQuad(normalizedRadius), 0, 1, 0, 255))
-      c.setAlpha(p.map(p.noise(strokeXOff), 0, 1, 127, 255))
+
+      // Noise opacity:
+      // c.setAlpha(p.map(p.noise(strokeXOff), 0, 1, 127, 255))
+
       p.stroke(c)
 
       p.beginShape()
